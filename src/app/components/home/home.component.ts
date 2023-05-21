@@ -17,51 +17,75 @@ export class HomeComponent implements OnInit {
   nomeLista!: string;
   nomeItem!: string;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.carregarListaSalva();
+  }
 
   constructor(public dialogService: DialogService, 
               public messageService: MessageService) {}
 
   adicionarLista() {
+    if(this.nomeLista === '' || this.nomeLista === undefined) return;
+
+    this.carregarListaSalva();
+
     this.listas.push({
       id: this.listas.length,
       descricao: this.nomeLista,
       itens: [],
     } as Lista);
 
+    this.salvarListaNoArmazenamento();
+
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Lista salva com sucesso!' });
+
     this.nomeLista = '';
   }
 
   adicionarItem(indice: number, nome: string | undefined) {
+    if(this.nomeItem === '' || this.nomeItem === undefined) return;
+
+    this.carregarListaSalva();
+
     this.listas[indice].itens.push({
       id: this.listas[indice].itens.length,
       descricao: nome,
     } as Item);
+
+    this.salvarListaNoArmazenamento();
+
+    this.nomeItem = '';
+
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Item salvo com sucesso!' });
   }
 
   excluirLista(indice: number) {
+    this.carregarListaSalva();
     this.listas.splice(indice, 1);
+    this.salvarListaNoArmazenamento();
   }
 
   excluirItem(indiceLista: number, item: Item) {
-    this.listas[indiceLista].itens.splice(
-      this.listas[indiceLista].itens.indexOf(item),
-      1
-    );
+    this.carregarListaSalva();
+    this.listas[indiceLista].itens.splice(this.listas[indiceLista].itens.indexOf(item),1);
+    this.salvarListaNoArmazenamento();
   }
-
-  // fecharDialogAdicionarLista() {
-  //   if (this.nomeLista) this.adicionarLista(this.nomeLista);
-
-  //   this.nomeLista = '';
-  //   this.isVisibleAdicionarLista = false;
-  // }
 
   fecharDialogAdicionarItem(indiceLista: number) {
     if (this.nomeItem) this.adicionarItem(indiceLista, this.nomeItem);
 
     this.nomeItem = '';
     this.isVisibleAdicionarItem = false;
+  }
+
+  carregarListaSalva() {
+    if (JSON.parse(localStorage.getItem('listas') || '') !== '') {
+      this.listas = JSON.parse(localStorage.getItem('listas') || '');
+    }
+  }
+
+  salvarListaNoArmazenamento() {
+    localStorage.setItem('listas', JSON.stringify(this.listas));
   }
 
 }

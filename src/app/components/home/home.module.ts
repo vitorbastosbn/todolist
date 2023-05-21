@@ -14,7 +14,7 @@ import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
-
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,8 @@ import { HomeComponent } from './home.component';
     ReactiveFormsModule,
     FormsModule,
     DialogModule,
-    AutoFocusModule
+    AutoFocusModule,
+    ToastModule
   ]
 })
 export class HomeModule { }
