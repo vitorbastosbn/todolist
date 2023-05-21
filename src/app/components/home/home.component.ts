@@ -79,8 +79,9 @@ export class HomeComponent implements OnInit {
   }
 
   carregarListaSalva() {
-    if (JSON.parse(localStorage.getItem('listas') || '') !== '') {
-      this.listas = JSON.parse(localStorage.getItem('listas') || '');
+    if (JSON.parse(localStorage.getItem('listas') || '[]') !== '[]') {
+      console.log(JSON.parse(localStorage.getItem('listas') || '[]'));
+      this.listas = JSON.parse(localStorage.getItem('listas') || '[]');
     }
   }
 
