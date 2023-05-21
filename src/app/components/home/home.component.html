@@ -1,0 +1,40 @@
+<div>
+  <div style="background-color: black; padding: 10px;">
+    <h1 style="color: white;">TO-DO List</h1><br/>
+    <div class="p-inputgroup" style="margin-bottom: 2%;">
+      <input type="text" pInputText [(ngModel)]="nomeLista" placeholder="Escreva o nome da sua lista" pAutoFocus [autofocus]="true" />
+      <p-button icon="pi pi-plus" styleClass="p-button-info" (onClick)="adicionarLista()"></p-button>
+    </div>
+  </div>
+
+  <p-panel [showHeader]="false" *ngIf="listas.length !== 0">
+    <p-accordion *ngFor="let lista of listas; index as i;">
+      <p-accordionTab header="{{lista.descricao}}">
+        <div style="text-align: end;">
+            <p-button icon="pi pi-plus" label="Adicionar Item" (onClick)="isVisibleAdicionarItem = true"></p-button>
+        </div>
+        <div>
+            <p-table [value]="lista.itens" [tableStyle]="{ 'min-width': '50rem' }" *ngIf="lista.itens.length !== 0">
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td style="width: 90%;">{{ item.descricao }}</td>
+                        <td style="text-align: center;"><p-button icon="pi pi-trash" styleClass="p-button-danger" (onClick)="excluirItem(i, item)"></p-button></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div style="text-align: center;" *ngIf="lista.itens.length === 0">
+            <p>Nenhum item cadastrado.</p><br/>
+            <p-button icon="pi pi-trash" label="Excluir Lista" styleClass="p-button-danger" (onClick)="excluirLista(i)"></p-button>
+        </div>
+      </p-accordionTab>
+      <p-dialog [(visible)]="isVisibleAdicionarItem" header="Escolha o nome do seu item." [draggable]="false" [style]="{ width: '60vw' }">
+        <div style="text-align: center; margin-top: 10px;">
+          <input type="text" pInputText [(ngModel)]="nomeItem" pAutoFocus [autofocus]="true" style="width: 80%; margin-right: 10px;" />
+          <p-button icon="pi pi-check" label="Ok" styleClass="p-button-text" (onClick)="fecharDialogAdicionarItem(i)"></p-button>
+        </div>
+      </p-dialog>
+    </p-accordion>
+  </p-panel>
+</div>
+
